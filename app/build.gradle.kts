@@ -54,6 +54,7 @@ android {
         mlModelBinding = true
         buildConfig = true
         compose = true
+        viewBinding = true
     }
 
     composeOptions {

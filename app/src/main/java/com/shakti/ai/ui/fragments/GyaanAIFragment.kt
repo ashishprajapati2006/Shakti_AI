@@ -4,179 +4,102 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.shakti.ai.R
+import com.shakti.ai.databinding.FragmentGyaanAiBinding
 import com.shakti.ai.viewmodel.GyaanViewModel
 import kotlinx.coroutines.launch
 
 class GyaanAIFragment : Fragment() {
 
+    private var _binding: FragmentGyaanAiBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: GyaanViewModel by viewModels()
-
-    // Form inputs
-    private lateinit var categoryInput: EditText
-    private lateinit var stateInput: EditText
-    private lateinit var courseInput: EditText
-    private lateinit var incomeInput: EditText
-    private lateinit var percentageInput: EditText
-
-    // Buttons
-    private lateinit var btnFindScholarships: Button
-    private lateinit var btnPreFillForms: Button
-    private lateinit var btnDocumentChecklist: Button
-    private lateinit var btnDeadlineReminders: Button
-    private lateinit var btnApplicationTracking: Button
-    private lateinit var btnVirtualMentorship: Button
-    private lateinit var btnWomenLeadersStories: Button
-    private lateinit var btnSkillDevelopment: Button
-    private lateinit var btnOnlineCourses: Button
-    private lateinit var btnCareerGuidance: Button
-    private lateinit var btnSkillAssessment: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_gyaan_ai, container, false)
+    ): View {
+        _binding = FragmentGyaanAiBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initializeViews(view)
         setupClickListeners()
         observeViewModel()
     }
 
-    private fun initializeViews(view: View) {
-        // Form inputs
-        categoryInput = view.findViewById(R.id.category_input)
-        stateInput = view.findViewById(R.id.state_input)
-        courseInput = view.findViewById(R.id.course_input)
-        incomeInput = view.findViewById(R.id.income_input)
-        percentageInput = view.findViewById(R.id.percentage_input)
-
-        // All buttons from layout
-        btnFindScholarships = view.findViewById(R.id.btn_find_scholarships)
-        btnPreFillForms = view.findViewById(R.id.btn_pre_fill_forms)
-        btnDocumentChecklist = view.findViewById(R.id.btn_document_checklist)
-        btnDeadlineReminders = view.findViewById(R.id.btn_deadline_reminders)
-        btnApplicationTracking = view.findViewById(R.id.btn_application_tracking)
-        btnVirtualMentorship = view.findViewById(R.id.btn_virtual_mentorship)
-        btnWomenLeadersStories = view.findViewById(R.id.btn_women_leaders_stories)
-        btnSkillDevelopment = view.findViewById(R.id.btn_skill_development)
-        btnOnlineCourses = view.findViewById(R.id.btn_online_courses)
-        btnCareerGuidance = view.findViewById(R.id.btn_career_guidance)
-        btnSkillAssessment = view.findViewById(R.id.btn_skill_assessment)
-    }
-
-    private fun setupClickListeners() {
-        btnFindScholarships.setOnClickListener {
-            findScholarships()
-        }
-
-        btnPreFillForms.setOnClickListener {
-            showPreFillFormsWizard()
-        }
-
-        btnDocumentChecklist.setOnClickListener {
-            showDocumentChecklist()
-        }
-
-        btnDeadlineReminders.setOnClickListener {
-            showDeadlineReminders()
-        }
-
-        btnApplicationTracking.setOnClickListener {
-            showApplicationTracking()
-        }
-
-        btnVirtualMentorship.setOnClickListener {
-            connectWithMentor()
-        }
-
-        btnWomenLeadersStories.setOnClickListener {
-            showWomenLeadersStories()
-        }
-
-        btnSkillDevelopment.setOnClickListener {
-            showSkillDevelopment()
-        }
-
-        btnOnlineCourses.setOnClickListener {
-            showOnlineCourses()
-        }
-
-        btnCareerGuidance.setOnClickListener {
-            showCareerGuidance()
-        }
-
-        btnSkillAssessment.setOnClickListener {
-            takeSkillAssessment()
-        }
+    private fun setupClickListeners() = with(binding) {
+        btnFindScholarships.setOnClickListener { findScholarships() }
+        btnPreFillForms.setOnClickListener { showPreFillFormsWizard() }
+        btnDocumentChecklist.setOnClickListener { showDocumentChecklist() }
+        btnDeadlineReminders.setOnClickListener { showDeadlineReminders() }
+        btnApplicationTracking.setOnClickListener { showApplicationTracking() }
+        btnVirtualMentorship.setOnClickListener { connectWithMentor() }
+        btnWomenLeadersStories.setOnClickListener { showWomenLeadersStories() }
+        btnSkillDevelopment.setOnClickListener { showSkillDevelopment() }
+        btnOnlineCourses.setOnClickListener { showOnlineCourses() }
+        btnCareerGuidance.setOnClickListener { showCareerGuidance() }
+        btnSkillAssessment.setOnClickListener { takeSkillAssessment() }
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collect { isLoading ->
-                btnFindScholarships.isEnabled = !isLoading
-                btnFindScholarships.text =
-                    if (isLoading) "🔍 Searching..." else "🔍 Find My Scholarships"
-
-                if (isLoading) {
-                    btnFindScholarships.alpha = 0.5f
-                } else {
-                    btnFindScholarships.alpha = 1.0f
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.isLoading.collect { isLoading ->
+                        binding.btnFindScholarships.isEnabled = !isLoading
+                        binding.btnFindScholarships.alpha = if (isLoading) 0.5f else 1f
+                        binding.btnFindScholarships.text =
+                            if (isLoading) "🔍 Searching..." else "🔍 Find My Scholarships"
+                    }
                 }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.scholarships.collect { scholarships ->
-                if (scholarships.isNotEmpty()) {
-                    showScholarships(scholarships)
+                launch {
+                    viewModel.scholarships.collect { s ->
+                        if (s.isNotEmpty()) showScholarships(s)
+                    }
                 }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.courseRecommendations.collect { courses ->
-                if (courses.isNotEmpty()) {
-                    showCoursesDialog(courses)
+                launch {
+                    viewModel.courseRecommendations.collect { c ->
+                        if (c.isNotEmpty()) showCoursesDialog(c)
+                    }
                 }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect { error ->
-                error?.let {
-                    Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                    viewModel.clearError()
+                launch {
+                    viewModel.errorMessage.collect { e ->
+                        e?.let {
+                            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                            viewModel.clearError()
+                        }
+                    }
                 }
             }
         }
     }
 
-    private fun findScholarships() {
-        val education = courseInput.text.toString()
-        val income = incomeInput.text.toString().toLongOrNull() ?: 0L
-        val category = categoryInput.text.toString()
-        val state = stateInput.text.toString()
-        val percentage = percentageInput.text.toString()
+    private fun findScholarships() = with(binding) {
+        val education = courseInput.text?.toString()?.trim().orEmpty()
+        val income = incomeInput.text?.toString()?.trim()?.toLongOrNull() ?: 0L
+        val category = categoryInput.text?.toString()?.trim().orEmpty()
+        val state = stateInput.text?.toString()?.trim().orEmpty()
 
         if (education.isBlank()) {
-            Toast.makeText(context, "Please enter course details", Toast.LENGTH_SHORT).show()
-            return
+            Toast.makeText(requireContext(), "Please enter course details", Toast.LENGTH_SHORT)
+                .show()
+            return@with
         }
 
         Toast.makeText(
-            context,
+            requireContext(),
             "🔍 Searching scholarships for:\n• $education\n• $category\n• $state",
             Toast.LENGTH_SHORT
         ).show()
@@ -185,15 +108,22 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showScholarships(scholarships: String) {
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("🎓 Scholarships Found")
             .setMessage(scholarships)
             .setPositiveButton("Apply Now") { _, _ ->
-                Toast.makeText(context, "Opening application portal...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Opening application portal...",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             .setNeutralButton("Save List") { _, _ ->
-                Toast.makeText(context, "✅ Scholarships saved to your profile", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    requireContext(),
+                    "✅ Scholarships saved to your profile",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             .setNegativeButton("Close", null)
             .show()
@@ -207,14 +137,12 @@ class GyaanAIFragment : Fragment() {
             "Online Course Registration",
             "Job Application Form"
         )
-
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📝 Auto-Fill Forms")
-            .setMessage("Select form type to auto-fill:")
             .setItems(formTypes) { _, which ->
                 val formType = formTypes[which]
                 Toast.makeText(
-                    context,
+                    requireContext(),
                     "✅ Opening $formType with auto-fill enabled",
                     Toast.LENGTH_LONG
                 ).show()
@@ -224,7 +152,7 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showDocumentChecklist() {
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📋 Document Checklist")
             .setMessage(
                 """
@@ -246,14 +174,15 @@ class GyaanAIFragment : Fragment() {
             """.trimIndent()
             )
             .setPositiveButton("Upload Documents") { _, _ ->
-                Toast.makeText(context, "Opening document upload...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Opening document upload...", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
     }
 
     private fun showDeadlineReminders() {
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("⏰ Deadline Reminders")
             .setMessage(
                 """
@@ -261,28 +190,26 @@ class GyaanAIFragment : Fragment() {
                 
                 📌 National Scholarship Portal
                    Deadline: 30th November 2025
-                   Days Left: 23 days
                 
                 📌 State Scholarship Scheme
                    Deadline: 15th December 2025
-                   Days Left: 38 days
                 
                 📌 Merit-cum-Means Scholarship
                    Deadline: 31st December 2025
-                   Days Left: 54 days
                 
                 💡 We'll send you reminders 7 days before deadline!
             """.trimIndent()
             )
             .setPositiveButton("Set Reminders") { _, _ ->
-                Toast.makeText(context, "✅ Reminders activated!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "✅ Reminders activated!", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
     }
 
     private fun showApplicationTracking() {
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📊 Application Tracking")
             .setMessage(
                 """
@@ -304,7 +231,8 @@ class GyaanAIFragment : Fragment() {
             """.trimIndent()
             )
             .setPositiveButton("View Details") { _, _ ->
-                Toast.makeText(context, "Opening detailed view...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Opening detailed view...", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
@@ -319,10 +247,8 @@ class GyaanAIFragment : Fragment() {
             "🌟 Roshni Nadar Malhotra - HCL Tech CEO",
             "🌟 Arundhati Bhattacharya - Former SBI Chairperson"
         )
-
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("⭐ Women Leaders Stories")
-            .setMessage("Select a leader to read their inspiring journey:")
             .setItems(leaders) { _, which ->
                 val leader = leaders[which].substring(2)
                 showLeaderStory(leader)
@@ -333,52 +259,37 @@ class GyaanAIFragment : Fragment() {
 
     private fun showLeaderStory(leader: String) {
         val story = when {
-            leader.contains("Kiran") -> """
+            leader.contains("Kiran", true) -> """
                 Kiran Mazumdar-Shaw - Breaking Barriers in Biotech
-                
-                Started Biocon in 1978 with just ₹10,000 in her garage. Today, Biocon is India's largest biopharmaceutical company worth billions.
+                Started Biocon in 1978 with just ₹10,000 in her garage. Today, Biocon is India's largest biopharmaceutical company.
                 
                 Key Lessons:
                 • Don't let gender stereotypes limit you
                 • Persistence pays off
                 • Innovation drives success
                 • Give back to society
-                
-                "I overcame the initial prejudice against women in science and business."
             """.trimIndent()
-
-            leader.contains("Falguni") -> """
+            leader.contains("Falguni", true) -> """
                 Falguni Nayar - From Investment Banking to Beauty Empire
-                
-                Left her successful career at age 50 to start Nykaa. Built India's leading beauty and fashion e-commerce platform from scratch.
+                Left her successful career at age 50 to start Nykaa. Built India's leading beauty & fashion e-commerce platform.
                 
                 Key Lessons:
-                • Age is just a number
+                • It's never too late
                 • Follow your passion
                 • Build strong teams
                 • Focus on customer experience
-                
-                "It's never too late to pursue your dreams."
             """.trimIndent()
-
             else -> """
                 $leader
-                
                 An inspiring journey of determination, hard work, and breaking glass ceilings.
-                
-                Key Takeaways:
-                • Education is the foundation
-                • Never give up on dreams
-                • Hard work always pays off
-                • Empower others along the way
             """.trimIndent()
         }
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(leader)
             .setMessage(story)
             .setPositiveButton("Read More") { _, _ ->
-                Toast.makeText(context, "Opening full story...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Opening full story...", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Close", null)
             .show()
@@ -394,9 +305,8 @@ class GyaanAIFragment : Fragment() {
             "🏥 Healthcare & Wellness"
         )
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("💻 Free Skill Development")
-            .setMessage("Select area to develop skills:")
             .setItems(skillCategories) { _, which ->
                 val category = skillCategories[which].substring(2)
                 showSkillCourses(category)
@@ -406,10 +316,8 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showSkillCourses(category: String) {
-        val courses = when {
-            category.contains("Technology") -> """
+        val courses = if (category.contains("Technology", true)) """
                 Free Technology Courses:
-                
                 • Python Programming (Coursera)
                 • Web Development (freeCodeCamp)
                 • Data Science Basics (Google)
@@ -418,25 +326,21 @@ class GyaanAIFragment : Fragment() {
                 
                 All courses offer certificates!
             """.trimIndent()
-
-            else -> """
+        else """
                 Free Courses in $category:
-                
                 • Beginner Level Courses
                 • Intermediate Projects
                 • Advanced Specializations
                 • Certification Programs
                 • Industry Mentorship
-                
-                Start learning today!
             """.trimIndent()
-        }
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(category)
             .setMessage(courses)
             .setPositiveButton("Enroll Now") { _, _ ->
-                Toast.makeText(context, "✅ Opening enrollment...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "✅ Opening enrollment...", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
@@ -447,22 +351,20 @@ class GyaanAIFragment : Fragment() {
             "🎓 Academic Counselor",
             "💼 Career Mentor",
             "💻 Tech Industry Expert",
-            "👩‍⚕️ Healthcare Professional",
+            "👩‍⚕ Healthcare Professional",
             "👩‍🏫 Teaching/Education",
             "📊 Business/Entrepreneurship"
         )
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("👩‍🏫 Connect with Mentor")
-            .setMessage("Select your area of interest:")
             .setItems(mentorTypes) { _, which ->
                 val mentor = mentorTypes[which].substring(2)
                 Toast.makeText(
-                    context,
-                    "✅ Finding mentors in: $mentor\n\nYou'll be matched within 24 hours!",
+                    requireContext(),
+                    "✅ Finding mentors in: $mentor\nYou'll be matched soon.",
                     Toast.LENGTH_LONG
                 ).show()
-                // Search for mentors and courses in this field
                 viewModel.recommendCourses(emptyList(), mentor, 0L)
             }
             .setNegativeButton("Cancel", null)
@@ -470,76 +372,61 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showOnlineCourses() {
-        val popularCourses = """
+        val popular = """
             💻 Free Online Learning Platforms:
-            
-            1. SWAYAM (Government of India)
-               - Free courses with certificates
-               - Accepted by employers
-               
+            1. SWAYAM (Govt of India)
             2. NPTEL (IIT/IISc)
-               - Engineering & Science
-               - Free video lectures
-            
             3. Google Digital Garage
-               - Digital Marketing
-               - Free certification
-            
             4. Microsoft Learn
-               - Technology skills
-               - Free with certificates
-            
-            5. Coursera for Women
-               - Scholarships available
-               - Global universities
-            
+            5. Coursera (scholarships)
             6. Udemy Free Courses
-               - Varied subjects
-               - Lifetime access
-            
-            💡 Search for courses in your field!
         """.trimIndent()
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📚 Free Online Courses")
-            .setMessage(popularCourses)
+            .setMessage(popular)
             .setPositiveButton("Browse Courses") { _, _ ->
                 viewModel.recommendCourses(emptyList(), "All", 0L)
-                Toast.makeText(context, "✅ Opening course catalog...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "✅ Opening course catalog...", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
     }
 
     private fun showCoursesDialog(courses: String) {
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📚 Recommended Courses")
             .setMessage(courses)
             .setPositiveButton("Enroll") { _, _ ->
-                Toast.makeText(context, "Opening course enrollment...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Opening course enrollment...", Toast.LENGTH_SHORT)
+                    .show()
             }
             .setNegativeButton("Close", null)
             .show()
     }
 
     private fun showCareerGuidance() {
-        val input = EditText(requireContext()).apply {
+        val input = TextInputEditText(requireContext()).apply {
             hint = "What are your interests? (e.g., Teaching, Technology, Healthcare)"
             setPadding(50, 40, 50, 40)
             minHeight = 120
         }
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("🎯 Career Guidance")
             .setMessage("Tell us about your interests and skills:")
             .setView(input)
             .setPositiveButton("Get Guidance") { _, _ ->
-                val interests = input.text.toString()
+                val interests = input.text?.toString()?.trim().orEmpty()
                 if (interests.isNotBlank()) {
                     showCareerOptions(interests)
                 } else {
-                    Toast.makeText(context, "Please enter your interests", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Please enter your interests",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -547,74 +434,50 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showCareerOptions(interests: String) {
-        val careerAdvice = """
+        val suggestions = getCareerSuggestions(interests)
+        val advice = """
             🎯 Career Paths for "$interests":
+            $suggestions
             
-            ${getCareerSuggestions(interests)}
-            
-            📚 Recommended Skills to Learn:
-            • Communication Skills
-            • Digital Literacy
-            • Leadership & Management
-            • Technical Skills (field-specific)
-            
-            💼 Job Portals for Women:
-            • Naukri.com
-            • LinkedIn
-            • Indeed
-            • WomenJobPortal.in
-            • Sheroes
-            
-            💡 Next Steps:
-            1. Take skill assessment
-            2. Complete relevant courses
-            3. Build portfolio/resume
-            4. Network with professionals
-            5. Apply for internships/jobs
+            📚 Recommended Skills:
+            • Communication • Digital Literacy • Leadership • Field-specific Tech
         """.trimIndent()
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Career Guidance")
-            .setMessage(careerAdvice)
-            .setPositiveButton("Explore Courses") { _, _ ->
-                showOnlineCourses()
-            }
+            .setMessage(advice)
+            .setPositiveButton("Explore Courses") { _, _ -> showOnlineCourses() }
             .setNegativeButton("Close", null)
             .show()
     }
 
-    private fun getCareerSuggestions(interests: String): String {
-        return when {
-            interests.contains("tech", ignoreCase = true) -> """
+    private fun getCareerSuggestions(interests: String): String = when {
+        interests.contains("tech", true) -> """
                 • Software Developer
                 • Data Analyst
                 • Digital Marketing Specialist
                 • UI/UX Designer
                 • Cybersecurity Analyst
             """.trimIndent()
-
-            interests.contains("teach", ignoreCase = true) -> """
+        interests.contains("teach", true) -> """
                 • School Teacher
                 • Online Tutor
                 • Educational Content Creator
                 • Career Counselor
                 • Training & Development Specialist
             """.trimIndent()
-
-            interests.contains("health", ignoreCase = true) -> """
+        interests.contains("health", true) -> """
                 • Nurse
                 • Medical Technician
                 • Nutritionist
                 • Public Health Worker
                 • Healthcare Administrator
             """.trimIndent()
-
-            else -> """
-                • Based on your interests, multiple career options available
-                • Take skill assessment for personalized recommendations
-                • Connect with mentors for guidance
+        else -> """
+                • Multiple options match your interests.
+                • Take a skill assessment for personalization.
+                • Connect with mentors for guidance.
             """.trimIndent()
-        }
     }
 
     private fun takeSkillAssessment() {
@@ -626,22 +489,23 @@ class GyaanAIFragment : Fragment() {
             "Creative Thinking",
             "Financial Literacy"
         )
+        val selected = BooleanArray(skills.size)
 
-        val selectedSkills = BooleanArray(skills.size)
-
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("📊 Skill Assessment")
-            .setMessage("Select skills you want to assess:")
-            .setMultiChoiceItems(skills, selectedSkills) { _, which, isChecked ->
-                selectedSkills[which] = isChecked
+            .setMultiChoiceItems(skills, selected) { _, which, isChecked ->
+                selected[which] = isChecked
             }
             .setPositiveButton("Start Assessment") { _, _ ->
-                val selected = skills.filterIndexed { index, _ -> selectedSkills[index] }
-                if (selected.isNotEmpty()) {
-                    showAssessmentResult(selected)
+                val chosen = skills.filterIndexed { i, _ -> selected[i] }
+                if (chosen.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please select at least one skill",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    Toast.makeText(context, "Please select at least one skill", Toast.LENGTH_SHORT)
-                        .show()
+                    showAssessmentResult(chosen)
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -649,38 +513,27 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showAssessmentResult(skills: List<String>) {
-        val result = skills.joinToString("\n") { skill ->
-            val score = (60..95).random()
-            "• $skill: $score/100"
-        }
-
+        val result = skills.joinToString("\n") { s -> "• $s: ${(60..95).random()}/100" }
         val advice = """
             📊 Your Skill Assessment Results:
-            
             $result
             
             💡 Recommendations:
-            • Focus on improving lower-scored skills
-            • Take online courses to enhance knowledge
-            • Practice regularly
-            • Seek mentorship
-            • Apply skills in real projects
-            
-            🎯 Suggested Learning Path:
-            1. Complete beginner courses
-            2. Work on practical projects
-            3. Get certified
-            4. Join communities
-            5. Keep learning & growing!
+            • Focus on lower-scored skills
+            • Take online courses & practice
+            • Seek mentorship and build projects
         """.trimIndent()
 
-        android.app.AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Assessment Results")
             .setMessage(advice)
-            .setPositiveButton("Find Courses") { _, _ ->
-                showOnlineCourses()
-            }
+            .setPositiveButton("Find Courses") { _, _ -> showOnlineCourses() }
             .setNegativeButton("Close", null)
             .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

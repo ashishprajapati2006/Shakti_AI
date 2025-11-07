@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:overScrollMode="always"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,22 +26,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📚 GYAAN - Education Access"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/gyaan_color"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:text="📚 GYAAN - Education Access"
+                android:textColor="@color/gyaan_color"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AI Scholarship Finder • 500+ Schemes • Virtual Mentorship"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary"
-                android:gravity="center"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="AI Scholarship Finder • 500+ Schemes • Virtual Mentorship"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
 
             <!-- AI Scholarship Matcher -->
             <androidx.cardview.widget.CardView
@@ -59,84 +61,83 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="🔍 AI-Powered Scholarship Matcher"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Search 500+ government and private scholarships"
-                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/category_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Category (General/OBC/SC/ST)"
-                        android:padding="12dp"
-                        android:background="@android:drawable/edit_text"
-                        android:minHeight="48dp"
                         android:layout_marginBottom="8dp"
-                        android:inputType="text" />
+                        android:background="@android:drawable/edit_text"
+                        android:hint="Category (General/OBC/SC/ST)"
+                        android:inputType="text"
+                        android:minHeight="48dp"
+                        android:padding="12dp" />
 
                     <EditText
                         android:id="@+id/state_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="State"
-                        android:padding="12dp"
-                        android:background="@android:drawable/edit_text"
-                        android:minHeight="48dp"
                         android:layout_marginBottom="8dp"
-                        android:inputType="text" />
+                        android:background="@android:drawable/edit_text"
+                        android:hint="State"
+                        android:inputType="text"
+                        android:minHeight="48dp"
+                        android:padding="12dp" />
 
                     <EditText
                         android:id="@+id/course_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Course Interested In"
-                        android:padding="12dp"
-                        android:background="@android:drawable/edit_text"
-                        android:minHeight="48dp"
                         android:layout_marginBottom="8dp"
-                        android:inputType="text" />
+                        android:background="@android:drawable/edit_text"
+                        android:hint="Course Interested In"
+                        android:inputType="text"
+                        android:minHeight="48dp"
+                        android:padding="12dp" />
 
                     <EditText
                         android:id="@+id/income_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Family Income (Annual)"
-                        android:padding="12dp"
-                        android:inputType="number"
+                        android:layout_marginBottom="8dp"
                         android:background="@android:drawable/edit_text"
+                        android:hint="Family Income (Annual)"
+                        android:inputType="number"
                         android:minHeight="48dp"
-                        android:layout_marginBottom="8dp" />
+                        android:padding="12dp" />
 
                     <EditText
                         android:id="@+id/percentage_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="12th Standard Percentage"
-                        android:padding="12dp"
-                        android:inputType="numberDecimal"
+                        android:layout_marginBottom="16dp"
                         android:background="@android:drawable/edit_text"
+                        android:hint="12th Standard Percentage"
+                        android:inputType="numberDecimal"
                         android:minHeight="48dp"
-                        android:layout_marginBottom="16dp" />
+                        android:padding="12dp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_find_scholarships"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🔍 Find My Scholarships"
-                        android:backgroundTint="@color/gyaan_color"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/gyaan_color" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -158,62 +159,55 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="📝 Application Assistance"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="We help you with every step"
-                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_pre_fill_forms"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="📄 Pre-Fill Forms"
-                        android:backgroundTint="@color/info"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/info" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_document_checklist"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="📋 Document Checklist"
-                        android:backgroundTint="@color/info"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/info" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_deadline_reminders"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="⏰ Deadline Reminders"
-                        android:backgroundTint="@color/warning"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
                         android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        android:text="⏰ Deadline Reminders"
+                        app:backgroundTint="@color/warning" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_application_tracking"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📊 Application Tracking"
-                        android:backgroundTint="@color/success"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/success" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -235,80 +229,68 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="🎯 Career Guidance"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_virtual_mentorship"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="👩‍🏫 Virtual Mentorship"
-                        android:backgroundTint="@color/gyaan_color"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/gyaan_color" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_women_leaders_stories"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="⭐ Women Leaders Stories"
-                        android:backgroundTint="@color/gyaan_color"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/gyaan_color" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_skill_development"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="💻 Skill Development"
-                        android:backgroundTint="@color/gyaan_color"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/gyaan_color" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_online_courses"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="📚 Browse Courses"
-                        android:backgroundTint="@color/accent"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/accent" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_career_guidance"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🎯 Get Guidance"
-                        android:backgroundTint="@color/accent"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
                         android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        android:text="🎯 Get Guidance"
+                        app:backgroundTint="@color/accent" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_skill_assessment"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📊 Skill Assessment"
-                        android:backgroundTint="@color/accent"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        app:backgroundTint="@color/accent" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
