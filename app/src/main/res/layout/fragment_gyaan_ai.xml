@@ -3,33 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:clickable="false"
+            android:focusable="false">
 
+            <!-- Header -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GYAAN - Education Access"
-                android:textSize="28sp"
+                android:text="📚 GYAAN - Education Access"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/gyaan_color"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AI Scholarship Finder • 500+ Schemes • Virtual Mentorship • Women Leaders Stories"
+                android:text="AI Scholarship Finder • 500+ Schemes • Virtual Mentorship"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"
                 android:gravity="center"
@@ -42,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,12 +63,12 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Search 500+ government &amp; private scholarships - we'll find what you're eligible for"
+                        android:text="Search 500+ government and private scholarships"
                         android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -71,10 +77,12 @@
                         android:id="@+id/category_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Your Category"
+                        android:hint="Category (General/OBC/SC/ST)"
                         android:padding="12dp"
                         android:background="@android:drawable/edit_text"
-                        android:layout_marginBottom="8dp" />
+                        android:minHeight="48dp"
+                        android:layout_marginBottom="8dp"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/state_input"
@@ -83,7 +91,9 @@
                         android:hint="State"
                         android:padding="12dp"
                         android:background="@android:drawable/edit_text"
-                        android:layout_marginBottom="8dp" />
+                        android:minHeight="48dp"
+                        android:layout_marginBottom="8dp"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/course_input"
@@ -92,7 +102,9 @@
                         android:hint="Course Interested In"
                         android:padding="12dp"
                         android:background="@android:drawable/edit_text"
-                        android:layout_marginBottom="8dp" />
+                        android:minHeight="48dp"
+                        android:layout_marginBottom="8dp"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/income_input"
@@ -102,6 +114,7 @@
                         android:padding="12dp"
                         android:inputType="number"
                         android:background="@android:drawable/edit_text"
+                        android:minHeight="48dp"
                         android:layout_marginBottom="8dp" />
 
                     <EditText
@@ -110,8 +123,9 @@
                         android:layout_height="wrap_content"
                         android:hint="12th Standard Percentage"
                         android:padding="12dp"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:background="@android:drawable/edit_text"
+                        android:minHeight="48dp"
                         android:layout_marginBottom="16dp" />
 
                     <Button
@@ -120,7 +134,9 @@
                         android:layout_height="wrap_content"
                         android:text="🔍 Find My Scholarships"
                         android:backgroundTint="@color/gyaan_color"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        style="@style/Widget.MaterialComponents.Button" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -130,7 +146,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,11 +158,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Application Assistance"
+                        android:text="📝 Application Assistance"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,27 +177,43 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📄 Pre-Fill Forms"
-                        android:layout_marginBottom="8dp" />
+                        android:backgroundTint="@color/info"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
 
                     <Button
                         android:id="@+id/btn_document_checklist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🎯 Document Checklist"
-                        android:layout_marginBottom="8dp" />
+                        android:text="📋 Document Checklist"
+                        android:backgroundTint="@color/info"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
 
                     <Button
                         android:id="@+id/btn_deadline_reminders"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="⏰ Deadline Reminders"
-                        android:layout_marginBottom="8dp" />
+                        android:backgroundTint="@color/warning"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
 
                     <Button
                         android:id="@+id/btn_application_tracking"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="📊 Application Tracking" />
+                        android:text="📊 Application Tracking"
+                        android:backgroundTint="@color/success"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        style="@style/Widget.MaterialComponents.Button" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -188,8 +221,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -200,7 +235,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Career Guidance"
+                        android:text="🎯 Career Guidance"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -210,23 +245,70 @@
                         android:id="@+id/btn_virtual_mentorship"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Virtual Mentorship Program"
-                        android:layout_marginBottom="8dp" />
+                        android:text="👩‍🏫 Virtual Mentorship"
+                        android:backgroundTint="@color/gyaan_color"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
 
                     <Button
                         android:id="@+id/btn_women_leaders_stories"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Women Leaders Stories"
-                        android:layout_marginBottom="8dp" />
+                        android:text="⭐ Women Leaders Stories"
+                        android:backgroundTint="@color/gyaan_color"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
 
                     <Button
                         android:id="@+id/btn_skill_development"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Free Skill Development Courses" />
+                        android:text="💻 Skill Development"
+                        android:backgroundTint="@color/gyaan_color"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
+
+                    <Button
+                        android:id="@+id/btn_online_courses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="📚 Browse Courses"
+                        android:backgroundTint="@color/accent"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
+
+                    <Button
+                        android:id="@+id/btn_career_guidance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🎯 Get Guidance"
+                        android:backgroundTint="@color/accent"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/Widget.MaterialComponents.Button" />
+
+                    <Button
+                        android:id="@+id/btn_skill_assessment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="📊 Skill Assessment"
+                        android:backgroundTint="@color/accent"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        style="@style/Widget.MaterialComponents.Button" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

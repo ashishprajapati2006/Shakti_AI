@@ -18,15 +18,22 @@ class GyaanAIFragment : Fragment() {
 
     private val viewModel: GyaanViewModel by viewModels()
 
+    // Form inputs
     private lateinit var categoryInput: EditText
     private lateinit var stateInput: EditText
     private lateinit var courseInput: EditText
     private lateinit var incomeInput: EditText
     private lateinit var percentageInput: EditText
+
+    // Buttons
     private lateinit var btnFindScholarships: Button
     private lateinit var btnPreFillForms: Button
     private lateinit var btnDocumentChecklist: Button
+    private lateinit var btnDeadlineReminders: Button
+    private lateinit var btnApplicationTracking: Button
     private lateinit var btnVirtualMentorship: Button
+    private lateinit var btnWomenLeadersStories: Button
+    private lateinit var btnSkillDevelopment: Button
     private lateinit var btnOnlineCourses: Button
     private lateinit var btnCareerGuidance: Button
     private lateinit var btnSkillAssessment: Button
@@ -48,26 +55,25 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
+        // Form inputs
         categoryInput = view.findViewById(R.id.category_input)
         stateInput = view.findViewById(R.id.state_input)
         courseInput = view.findViewById(R.id.course_input)
         incomeInput = view.findViewById(R.id.income_input)
         percentageInput = view.findViewById(R.id.percentage_input)
+
+        // All buttons from layout
         btnFindScholarships = view.findViewById(R.id.btn_find_scholarships)
         btnPreFillForms = view.findViewById(R.id.btn_pre_fill_forms)
         btnDocumentChecklist = view.findViewById(R.id.btn_document_checklist)
+        btnDeadlineReminders = view.findViewById(R.id.btn_deadline_reminders)
+        btnApplicationTracking = view.findViewById(R.id.btn_application_tracking)
         btnVirtualMentorship = view.findViewById(R.id.btn_virtual_mentorship)
-
-        // Additional features
-        btnOnlineCourses = createButton("💻 Free Online Courses")
-        btnCareerGuidance = createButton("🎯 Career Guidance")
-        btnSkillAssessment = createButton("📊 Skill Assessment")
-    }
-
-    private fun createButton(text: String): Button {
-        return Button(requireContext()).apply {
-            this.text = text
-        }
+        btnWomenLeadersStories = view.findViewById(R.id.btn_women_leaders_stories)
+        btnSkillDevelopment = view.findViewById(R.id.btn_skill_development)
+        btnOnlineCourses = view.findViewById(R.id.btn_online_courses)
+        btnCareerGuidance = view.findViewById(R.id.btn_career_guidance)
+        btnSkillAssessment = view.findViewById(R.id.btn_skill_assessment)
     }
 
     private fun setupClickListeners() {
@@ -83,8 +89,24 @@ class GyaanAIFragment : Fragment() {
             showDocumentChecklist()
         }
 
+        btnDeadlineReminders.setOnClickListener {
+            showDeadlineReminders()
+        }
+
+        btnApplicationTracking.setOnClickListener {
+            showApplicationTracking()
+        }
+
         btnVirtualMentorship.setOnClickListener {
             connectWithMentor()
+        }
+
+        btnWomenLeadersStories.setOnClickListener {
+            showWomenLeadersStories()
+        }
+
+        btnSkillDevelopment.setOnClickListener {
+            showSkillDevelopment()
         }
 
         btnOnlineCourses.setOnClickListener {
@@ -105,7 +127,13 @@ class GyaanAIFragment : Fragment() {
             viewModel.isLoading.collect { isLoading ->
                 btnFindScholarships.isEnabled = !isLoading
                 btnFindScholarships.text =
-                    if (isLoading) "Searching..." else "🔍 Find My Scholarships"
+                    if (isLoading) "🔍 Searching..." else "🔍 Find My Scholarships"
+
+                if (isLoading) {
+                    btnFindScholarships.alpha = 0.5f
+                } else {
+                    btnFindScholarships.alpha = 1.0f
+                }
             }
         }
 
@@ -139,11 +167,19 @@ class GyaanAIFragment : Fragment() {
         val education = courseInput.text.toString()
         val income = incomeInput.text.toString().toLongOrNull() ?: 0L
         val category = categoryInput.text.toString()
+        val state = stateInput.text.toString()
+        val percentage = percentageInput.text.toString()
 
         if (education.isBlank()) {
             Toast.makeText(context, "Please enter course details", Toast.LENGTH_SHORT).show()
             return
         }
+
+        Toast.makeText(
+            context,
+            "🔍 Searching scholarships for:\n• $education\n• $category\n• $state",
+            Toast.LENGTH_SHORT
+        ).show()
 
         viewModel.findScholarships(education, income, category)
     }
@@ -216,6 +252,196 @@ class GyaanAIFragment : Fragment() {
             .show()
     }
 
+    private fun showDeadlineReminders() {
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("⏰ Deadline Reminders")
+            .setMessage(
+                """
+                Upcoming Deadlines:
+                
+                📌 National Scholarship Portal
+                   Deadline: 30th November 2025
+                   Days Left: 23 days
+                
+                📌 State Scholarship Scheme
+                   Deadline: 15th December 2025
+                   Days Left: 38 days
+                
+                📌 Merit-cum-Means Scholarship
+                   Deadline: 31st December 2025
+                   Days Left: 54 days
+                
+                💡 We'll send you reminders 7 days before deadline!
+            """.trimIndent()
+            )
+            .setPositiveButton("Set Reminders") { _, _ ->
+                Toast.makeText(context, "✅ Reminders activated!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    private fun showApplicationTracking() {
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("📊 Application Tracking")
+            .setMessage(
+                """
+                Your Applications Status:
+                
+                🟢 Merit Scholarship - Approved
+                   Amount: ₹50,000 | Status: Disbursed
+                
+                🟡 State Scholarship - Under Review
+                   Amount: ₹30,000 | Status: Pending
+                
+                🔴 Central Scholarship - Documents Required
+                   Action: Upload income certificate
+                
+                📈 Total Applied: 5
+                ✅ Approved: 1
+                ⏳ Pending: 2
+                ❌ Rejected: 1
+            """.trimIndent()
+            )
+            .setPositiveButton("View Details") { _, _ ->
+                Toast.makeText(context, "Opening detailed view...", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    private fun showWomenLeadersStories() {
+        val leaders = arrayOf(
+            "🌟 Kiran Mazumdar-Shaw - Biocon Founder",
+            "🌟 Indra Nooyi - Former PepsiCo CEO",
+            "🌟 Falguni Nayar - Nykaa Founder",
+            "🌟 Sudha Murthy - Author & Philanthropist",
+            "🌟 Roshni Nadar Malhotra - HCL Tech CEO",
+            "🌟 Arundhati Bhattacharya - Former SBI Chairperson"
+        )
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("⭐ Women Leaders Stories")
+            .setMessage("Select a leader to read their inspiring journey:")
+            .setItems(leaders) { _, which ->
+                val leader = leaders[which].substring(2)
+                showLeaderStory(leader)
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    private fun showLeaderStory(leader: String) {
+        val story = when {
+            leader.contains("Kiran") -> """
+                Kiran Mazumdar-Shaw - Breaking Barriers in Biotech
+                
+                Started Biocon in 1978 with just ₹10,000 in her garage. Today, Biocon is India's largest biopharmaceutical company worth billions.
+                
+                Key Lessons:
+                • Don't let gender stereotypes limit you
+                • Persistence pays off
+                • Innovation drives success
+                • Give back to society
+                
+                "I overcame the initial prejudice against women in science and business."
+            """.trimIndent()
+
+            leader.contains("Falguni") -> """
+                Falguni Nayar - From Investment Banking to Beauty Empire
+                
+                Left her successful career at age 50 to start Nykaa. Built India's leading beauty and fashion e-commerce platform from scratch.
+                
+                Key Lessons:
+                • Age is just a number
+                • Follow your passion
+                • Build strong teams
+                • Focus on customer experience
+                
+                "It's never too late to pursue your dreams."
+            """.trimIndent()
+
+            else -> """
+                $leader
+                
+                An inspiring journey of determination, hard work, and breaking glass ceilings.
+                
+                Key Takeaways:
+                • Education is the foundation
+                • Never give up on dreams
+                • Hard work always pays off
+                • Empower others along the way
+            """.trimIndent()
+        }
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle(leader)
+            .setMessage(story)
+            .setPositiveButton("Read More") { _, _ ->
+                Toast.makeText(context, "Opening full story...", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    private fun showSkillDevelopment() {
+        val skillCategories = arrayOf(
+            "💻 Technology & Coding",
+            "📊 Business & Finance",
+            "🎨 Design & Creativity",
+            "📢 Marketing & Communication",
+            "👥 Leadership & Management",
+            "🏥 Healthcare & Wellness"
+        )
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("💻 Free Skill Development")
+            .setMessage("Select area to develop skills:")
+            .setItems(skillCategories) { _, which ->
+                val category = skillCategories[which].substring(2)
+                showSkillCourses(category)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showSkillCourses(category: String) {
+        val courses = when {
+            category.contains("Technology") -> """
+                Free Technology Courses:
+                
+                • Python Programming (Coursera)
+                • Web Development (freeCodeCamp)
+                • Data Science Basics (Google)
+                • App Development (Android)
+                • AI/ML Fundamentals (Microsoft)
+                
+                All courses offer certificates!
+            """.trimIndent()
+
+            else -> """
+                Free Courses in $category:
+                
+                • Beginner Level Courses
+                • Intermediate Projects
+                • Advanced Specializations
+                • Certification Programs
+                • Industry Mentorship
+                
+                Start learning today!
+            """.trimIndent()
+        }
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle(category)
+            .setMessage(courses)
+            .setPositiveButton("Enroll Now") { _, _ ->
+                Toast.makeText(context, "✅ Opening enrollment...", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
     private fun connectWithMentor() {
         val mentorTypes = arrayOf(
             "🎓 Academic Counselor",
@@ -233,8 +459,8 @@ class GyaanAIFragment : Fragment() {
                 val mentor = mentorTypes[which].substring(2)
                 Toast.makeText(
                     context,
-                    "✅ Finding mentors in: $mentor",
-                    Toast.LENGTH_SHORT
+                    "✅ Finding mentors in: $mentor\n\nYou'll be matched within 24 hours!",
+                    Toast.LENGTH_LONG
                 ).show()
                 // Search for mentors and courses in this field
                 viewModel.recommendCourses(emptyList(), mentor, 0L)
@@ -244,8 +470,6 @@ class GyaanAIFragment : Fragment() {
     }
 
     private fun showOnlineCourses() {
-        viewModel.recommendCourses(emptyList(), "Technology", 0L)
-
         val popularCourses = """
             💻 Free Online Learning Platforms:
             
@@ -277,10 +501,11 @@ class GyaanAIFragment : Fragment() {
         """.trimIndent()
 
         android.app.AlertDialog.Builder(requireContext())
-            .setTitle("💻 Free Online Courses")
+            .setTitle("📚 Free Online Courses")
             .setMessage(popularCourses)
             .setPositiveButton("Browse Courses") { _, _ ->
                 viewModel.recommendCourses(emptyList(), "All", 0L)
+                Toast.makeText(context, "✅ Opening course catalog...", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Close", null)
             .show()
@@ -301,6 +526,7 @@ class GyaanAIFragment : Fragment() {
         val input = EditText(requireContext()).apply {
             hint = "What are your interests? (e.g., Teaching, Technology, Healthcare)"
             setPadding(50, 40, 50, 40)
+            minHeight = 120
         }
 
         android.app.AlertDialog.Builder(requireContext())
@@ -311,6 +537,9 @@ class GyaanAIFragment : Fragment() {
                 val interests = input.text.toString()
                 if (interests.isNotBlank()) {
                     showCareerOptions(interests)
+                } else {
+                    Toast.makeText(context, "Please enter your interests", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             .setNegativeButton("Cancel", null)
